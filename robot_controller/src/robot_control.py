@@ -17,7 +17,6 @@ rospy.init_node('robot_control', anonymous=False)
 rospy.loginfo("Activation")
 br = CvBridge()
 dirname = os.path.dirname(__file__)
-print(dirname)
 path = dirname + "/configuration.txt"
 conf = open(path, 'r')
 my_private_key = conf.readline()
