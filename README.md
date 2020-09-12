@@ -45,19 +45,38 @@ In new terminal:
 rosrun gazebo_ros spawn_model -file `rospack find baxter_description`/urdf/baxter.urdf -urdf -z 1 -model baxter
 ```
 You can put some models in front of our baxter. It will be more intresting.
-![baxter](https://github.com/PaTara43/media/blob/master/Screenshot%20from%202020-08-27%2013-33-35.png)
+![baxter][im2]
 
+## 3.Manage accounts in DAPP
 
+Since we are testing, let us create a local robonomics network with robonomics binary file. Go to folder with robonomics file and run:
+```sh
+./robonomics --dev --rpc-cors all
+```
+![robonomics][im3]
 
+Don't forget to remove `db` folder after every launch:
+```sh
+rm -rf /home/$USER/.local/share/robonomics/chains/dev/db
+```
 
+Go to [https://parachain.robonomics.network][db5] and switch to local node
+![local node][im4]
 
+Go to Accounts and create __Baxter__ and __Employer__ accounts (__Robot__ is not necessary)
 
-
-
+__Important!__ Copy each account's key and address (to copy address click on account's icon). Transfer some money (units) to these accounts:
+![create account][im5]
+![accounts][im6]
 
 [db1]: <https://youtu.be/AeufQmaNRWk>
 [db2]: <http://wiki.ros.org/melodic/Installation>
 [db3]: <https://dist.ipfs.io/go-ipfs/v0.4.22/go-ipfs_v0.4.22_linux-386.tar.gz>
 [db4]: <https://github.com/airalab/robonomics/releases>
-[im1]: <https://github.com/PaTara43/media/blob/master/Screenshot%20from%202020-08-27%2013-33-35.png>
+[im1]: <https://github.com/nakata5321/media/blob/master/empty_world.png>
 [im2]: <https://github.com/nakata5321/media/blob/master/baxter_simulation.png>
+[im3]: <https://github.com/nakata5321/media/blob/master/robonomics.png>
+[db5]: <https://parachain.robonomics.network>
+[im4]: <https://github.com/nakata5321/media/blob/master/local_node.png>
+[im5]: <https://github.com/nakata5321/media/blob/master/create_account.png>
+[im6]: <https://github.com/nakata5321/media/blob/master/accounts.png>
