@@ -1,6 +1,6 @@
 # Control Baxter robot with robonomics
 
-Sample of how it works is available on [YouTube.][db1]
+Example of how it works is available on [YouTube.][db1]
 
 ## Requirements:
 
