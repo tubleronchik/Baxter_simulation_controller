@@ -66,8 +66,23 @@ Go to [https://parachain.robonomics.network][db5] and switch to local node
 Go to Accounts and create __Baxter__ and __Employer__ accounts (__Robot__ is not necessary)
 
 __Important!__ Copy each account's key and address (to copy address click on account's icon). Transfer some money (units) to these accounts:
+
 ![create account][im5]
 ![accounts][im6]
+
+Add Baxter's secret key and adress to `configuration.txt` in `robot_ws/src/robot_controller/src/
+
+## 4.Start simulation
+
+In new terminal run:
+```sh
+ifps init #you only need to do this once
+ipfs daemon
+```
+Open separate terminal and start *controller package*:
+```sh
+rosrun robot_controller robot_control.py
+```
 
 [db1]: <https://youtu.be/AeufQmaNRWk>
 [db2]: <http://wiki.ros.org/melodic/Installation>
