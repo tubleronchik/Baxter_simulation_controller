@@ -22,7 +22,7 @@ Download packages:
 ```sh
 mkdir -p robot_ws/src
 cd robot_ws/src
-git clone https://github.com/nakata5321/Baxter_simulation_controller.git
+git clone https://github.com/tubleronchik/Baxter_simulation_controller
 mv Baxter_simulation_controller/* ./
 rm -rf Baxter_simulation_controller/
 cd ..
