@@ -11,6 +11,7 @@ from geometry_msgs.msg import Twist
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 from threading import Thread
+from std_msgs.msg import String
 
 # write about activation
 rospy.init_node('robot_control', anonymous=False)
@@ -31,26 +32,33 @@ rospy.loginfo("Activation complete. Ready for a job")
 face_publisher.publish(face_msg)
 # end of activation
 
+global ForExit
+ForExit = True
+
+# TON topic
+def subscriber():
+    rospy.Subscriber("task", String, moj_callback)
+
+
+def moj_callback(data):
+    global ForExit
+    ForExit = False
+
+pub_js = rospy.Publisher('result_pub', String, queue_size=10)
+
 # waiting for a job
-program = '/home/nakata/robot_ws/' + '/robonomics io read launch'
-rob_read = subprocess.Popen(program, shell=True, stdout=subprocess.PIPE)
-while True:
+
+while ForExit:
     try:
         while not rospy.is_shutdown():
             face_publisher.publish(face_msg)
             break
-        output = rob_read.stdout.readline()
-        rospy.loginfo("Find a payment")
-        out = output.split(" >> ")
-        check_state = my_adress.rstrip() + " : true"
-        if(out[1].rstrip() == check_state):
-            rospy.loginfo("Job paid")
-            rob_read.kill()
-            break
-        if(output):
-            rospy.loginfo("Not my job")
+        subscriber()
+        #rospy.loginfo(ForExit)
+        
     except KeyboardInterrupt:
         exit()
+        
 
 # start working
 rospy.loginfo("Start working")
@@ -114,23 +122,12 @@ face_msg = br.cv2_to_imgmsg(face,  "bgr8")
 #push to ipfs
 rospy.loginfo("Push to IPFS")
 client = ipfshttpclient.connect()
-hash_result = []
-for x in result_picture:
-    while not rospy.is_shutdown():
-        face_publisher.publish(face_msg)
-        break
-    res = client.add(x)
-    hash_result.append(res.values()[0].encode('utf8'))
-    rospy.loginfo("Pushed, the IPFS hash is " + res.values()[0].encode('utf8'))
+
+while not rospy.is_shutdown():
+    face_publisher.publish(face_msg)
+    break
+
 res = client.add(dirname + '/' + "result.txt")
-hash_result.append(res.values()[0].encode('utf8'))
+pub_js.publish(String(res.values()[0].encode('utf8')))
 rospy.loginfo("Pushed, the IPFS hash is " + res.values()[0].encode('utf8'))
 
-#push to robonomics
-rospy.loginfo("Push hash to robonomics")
-for r in hash_result:
-    print("echo \"" + r + "\" | " + '/home/nakata/robot_ws/' + "robonomics io write datalog -s " + my_private_key)
-    program = "echo \"" + r + "\" | " + '/home/nakata/robot_ws/' + "robonomics io write datalog -s " + my_private_key
-    process = subprocess.Popen(program, shell=True, stdout=subprocess.PIPE)
-    rospy.sleep(4)
-rospy.loginfo("Job finished")
